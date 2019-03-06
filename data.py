@@ -1,12 +1,20 @@
 import pandas as pd
+import re
 from os import listdir
 from os.path import isfile, join
+
+def isFloat(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
 
 if __name__ == "__main__":
     drugNames = pd.read_excel("Drugs.xlsx",dtype=str)['Drug Name'].tolist()
     dataFileNames = [f for f in listdir("data/") if isfile(join("data/", f))]
     
-    rawDataFileName = dataFileNames[0].split(".")[0]
+    rawDataFileName = dataFileNames[12].split(".")[0]
     dataFileName = "data/" + rawDataFileName + ".xlsx"
     df = pd.read_excel(dataFileName,dtype=str)
     df = df.fillna('')
@@ -37,25 +45,52 @@ if __name__ == "__main__":
                         
                         # Parse out delivery
                         description = result["Description"]
-                        if "TAB" in description:
+                        if " TAB" in description:
                             delivery = "TABLET"
-                        elif "CAPSULE" or " CAP " in description:
+                        elif "CAPSULE" in description or " CAP" in description:
                             delivery = "CAPSULE"
-                        elif "ELIXIR" in description:
+                            #print(description)
+                        elif "ELIXIR" in description or " ELIX" in description:
                             delivery = "ELIXIR"
-                        elif "SUPPOSITORY" in description:
-                            delivery = "SUPPOSITORY"
-                        elif "INTRAVENOUS" in description:
-                            delivery = "INTRAVENOUS"
-                        elif "SUSPENSION" in description:
-                            delivery = "SUSPENSION"
-                        elif "SOLUTION" in description:
+                        elif "SUPPOSITORY" in description or " SUP" in description:
+                            delivery = "SUPPOSITORY" 
+                        elif "INTRAVENOUS" in description or " INJ" in description:
+                            delivery = "INJECTION"
+                        elif "SUSPENSION" in description or " SUSP" in description:
+                            delivery = "SUSPENSION" 
+                        elif "SOLUTION" in description or " SOLN" in description or " SOL" in description or " LIQ" in description:
                             delivery = "SOLUTION"
+                            if " IV " in description:
+                                delivery = "INJECTION"
+                        elif "SYRUP" in description:
+                            delivery = "SYRUP"
                         else: 
                             delivery = None
-                            print(description)
-
+                            
                         # Parse out Dosage
-                        #print(description)
-                        print(drugName,rawDataFileName,price,delivery)
+                        dosage = None
                         
+                        words = description.split(" ")
+                        
+                        # "40 MG" format
+                        for index,word in enumerate(words):
+                            if word.isnumeric() or isFloat(word) or re.search('^[0-9.-]',word) is not None:
+                                try:
+                                    dosage = word + words[index+1]
+                                except:
+                                    dosage = word
+
+                        # "40MG" format
+                        if dosage is None:
+                            for index,word in enumerate(words):
+                                search = re.search('^[0-9.-]+[A-Z]',word)
+                                if search is not None:
+                                    dosage = word
+
+                        print(drugName,rawDataFileName,price,delivery,dosage)
+                        
+                        if delivery is None:
+                            print("missing delivery", description)
+                        if dosage is None:
+                            print("missing dosage", description)
+
