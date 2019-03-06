@@ -76,41 +76,32 @@ if __name__ == "__main__":
                             # Parse out Dosage
                             dosage = None
                             
-                            words = description.split(" ")
-                            
-                            # "40 MG" format
-                            for index,word in enumerate(words):
-                                if word.isnumeric() or isFloat(word) or re.search('^[0-9.-]',word) is not None:
-                                    try:
-                                        dosage = word + " " + words[index+1]
-                                        # if "/" in words[index+1] and words[index+1][-1].isnumeric():
-                                        #     try:
-                                        #         dosage += words[index+2]
-                                        #     except:
-                                        #         pass
-                                    except:
-                                        dosage = word
-
                             # "40MG" format
                             if dosage is None:
-                                for index,word in enumerate(words):
-                                    search = re.search('^[0-9.-]+[A-Z]',word)
-                                    if search is not None:
-                                        dosage = word
+                                #search = re.search('^[0-9.-]+[A-Z]',word)
+                                search = re.search('(?:[^A-Z\*\(\)\,-]*)[0-9.]+[-]*[MGL\/]+([0-9.-]*[MGL\/])*',description.replace(" ", ""))
+                                #print(description.replace(" ", ""))
+                                if search is not None:
+                                    dosage = search.group()
+                                
+                            print(drugName,hospitalName,price,delivery,dosage)
+                            if price is None or delivery is None or dosage is None:
+                                pass
+                            else:
+                                d["Drug"].append(drugName)
+                                d["Hospital"].append(hospitalName)
+                                d["Delivery"].append(delivery)
+                                d["Dosage"].append(dosage)
+                                d["Price"].append(price)
+                                d["Raw Description"].append(description)
 
-                            #print(drugName,hospitalName,price,delivery,dosage)
-                            d["Drug"].append(drugName)
-                            d["Hospital"].append(hospitalName)
-                            d["Delivery"].append(delivery)
-                            d["Dosage"].append(dosage)
-                            d["Price"].append(price)
-                            d["Raw Description"].append(description)
-
+                            # debug
                             # if delivery is None:
                             #     print("missing delivery", description)
                             # if dosage is None:
                             #     print("missing dosage", description)
 
     df = pd.DataFrame.from_dict(d)
+    df = df.drop_duplicates()
     df.to_excel("output.xlsx")
     print(df)    
