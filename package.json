@@ -1,0 +1,22 @@
+{
+  "name": "chargemasteranalysis",
+  "version": "1.0.0",
+  "description": "Simple web app built to display drug data from public chargemasters",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjs250/ChargemasterAnalysis.git"
+  },
+  "author": "Brian Schendt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjs250/ChargemasterAnalysis/issues"
+  },
+  "homepage": "https://github.com/bjs250/ChargemasterAnalysis#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
