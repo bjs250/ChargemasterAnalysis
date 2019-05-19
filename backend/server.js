@@ -32,8 +32,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 
-// this is our get method
-// this method fetches all available data in our database
+/* Main Code starts here */
+
 router.get("/getData", (req, res) => {
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
@@ -41,8 +41,6 @@ router.get("/getData", (req, res) => {
   });
 });
 
-// this is our update method
-// this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
   const { id, update } = req.body;
   Data.findOneAndUpdate(id, update, err => {
@@ -51,8 +49,6 @@ router.post("/updateData", (req, res) => {
   });
 });
 
-// this is our delete method
-// this method removes existing data in our database
 router.delete("/deleteData", (req, res) => {
   const { id } = req.body;
   Data.findOneAndDelete(id, err => {
@@ -61,8 +57,6 @@ router.delete("/deleteData", (req, res) => {
   });
 });
 
-// this is our create methid
-// this method adds new data in our database
 router.post("/putData", (req, res) => {
   let data = new Data();
 

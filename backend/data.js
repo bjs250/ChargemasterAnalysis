@@ -5,10 +5,15 @@ const Schema = mongoose.Schema;
 const DataSchema = new Schema(
   {
     id: Number,
-    message: String
+    name: String,
+    price: String,
+    hospital: String,
+    delivery: String,
+    dosage: String,
+    description: String
   },
   { timestamps: true }
 );
 
 // export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model("Data", DataSchema);
+module.exports = mongoose.model("DrugInfo", DataSchema,"DrugInfoStore");

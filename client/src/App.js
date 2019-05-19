@@ -18,19 +18,19 @@ class App extends Component {
   // changed and implement those changes into our UI
   componentDidMount() {
     this.getDataFromDb();
-    if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
-      this.setState({ intervalIsSet: interval });
-    }
+    // if (!this.state.intervalIsSet) {
+    //   let interval = setInterval(this.getDataFromDb, 1000);
+    //   this.setState({ intervalIsSet: interval });
+    // }
   }
 
   // never let a process live forever 
   // always kill a process everytime we are done using it
   componentWillUnmount() {
-    if (this.state.intervalIsSet) {
-      clearInterval(this.state.intervalIsSet);
-      this.setState({ intervalIsSet: null });
-    }
+    // if (this.state.intervalIsSet) {
+    //   clearInterval(this.state.intervalIsSet);
+    //   this.setState({ intervalIsSet: null });
+    // }
   }
 
   // just a note, here, in the front end, we use the id key of our data object 
@@ -102,6 +102,7 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { data } = this.state;
+    console.log("d",data)
     return (
       <div>
         <ul>
