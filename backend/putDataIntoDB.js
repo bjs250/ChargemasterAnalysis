@@ -1,7 +1,7 @@
 /* This file's purpose is to load the cleaned data as a MongoDB table */
 let mongoose = require('mongoose');
 const Data = require("./data");
-const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/test?retryWrites=true";
+const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB?retryWrites=true";
 
 mongoose.connect(
     dbRoute,
@@ -46,7 +46,7 @@ connection.once('open', function () {
 
     query.exec(function (err, docs) {
         if (err) return console.error(err);
-        console.log(docs)
+        //console.log(docs)
     });
 
 
@@ -60,7 +60,7 @@ connection.once('open', function () {
             console.log(err);
             return;
         }
-        //console.log(collectionNames);
+        console.log(collectionNames);
         connection.close();
     });
 
