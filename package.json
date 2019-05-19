@@ -1,22 +1,15 @@
 {
-  "name": "chargemasteranalysis",
+  "name": "fullstack_app",
   "version": "1.0.0",
-  "description": "Simple web app built to display drug data from public chargemasters",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bjs250/ChargemasterAnalysis.git"
-  },
-  "author": "Brian Schendt",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bjs250/ChargemasterAnalysis/issues"
-  },
-  "homepage": "https://github.com/bjs250/ChargemasterAnalysis#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "concurrently": "^4.0.1"
   }
 }
