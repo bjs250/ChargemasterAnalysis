@@ -34,16 +34,35 @@ app.use(logger("dev"));
 
 /* Main Code starts here */
 
-// Custom code
-
 router.get("/getDrugNames", (req, res) => {
   Data.distinct("name", (err, data) => {
-    console.log(data);
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
 });
 
+router.get("/getDeliveryMethods/:drugName", (req, res) => {
+  const { drugName } = req.params;
+  Data.distinct("delivery", {name: drugName}, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+
+});
+
+router.get("/getDosageAmounts/", (req, res) => {
+  const { drugName, deliveryMethod } = req.query;
+  Data.distinct("dosage", {name: drugName, delivery: deliveryMethod}, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    console.log("data",data)
+    return res.json({ success: true, data: data });
+  });
+
+});
+
+
+
+/* 
 router.get("/getData", (req, res) => {
   Data.find((err, data) => {
     console.log("=====",data)
@@ -85,7 +104,7 @@ router.post("/putData", (req, res) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
-});
+}); */
 
 // append /api for our http requests
 app.use("/api", router);
