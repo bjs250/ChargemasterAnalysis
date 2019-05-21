@@ -4,6 +4,8 @@
 
 To allow end users to investigate recently publicized chargemaster data from US hospitals. 
 
+## Methodology
+
 ## Design & Implementation
 
 ## Built With

@@ -54,13 +54,19 @@ router.get("/getDosageAmounts/", (req, res) => {
   const { drugName, deliveryMethod } = req.query;
   Data.distinct("dosage", {name: drugName, delivery: deliveryMethod}, (err, data) => {
     if (err) return res.json({ success: false, error: err });
-    console.log("data",data)
     return res.json({ success: true, data: data });
   });
 
 });
 
+router.get("/getData/", (req, res) => {
+  const { drugName, deliveryMethod, dosage } = req.query;
+  Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}, (err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
 
+});
 
 /* 
 router.get("/getData", (req, res) => {
