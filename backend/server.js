@@ -11,7 +11,7 @@ app.use(cors());
 const router = express.Router();
 
 // this is our MongoDB database
-const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/test?retryWrites=true";
+const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB?retryWrites=true";
 
 // connects our back end code with the database
 mongoose.connect(
@@ -34,8 +34,19 @@ app.use(logger("dev"));
 
 /* Main Code starts here */
 
+// Custom code
+
+router.get("/getDrugNames", (req, res) => {
+  Data.distinct("name", (err, data) => {
+    console.log(data);
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
+
 router.get("/getData", (req, res) => {
   Data.find((err, data) => {
+    console.log("=====",data)
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });

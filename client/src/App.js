@@ -4,6 +4,7 @@ import axios from "axios";
 class App extends Component {
   // initialize our state 
   state = {
+    drugNames: [],
     data: [],
     id: 0,
     message: null,
@@ -41,9 +42,10 @@ class App extends Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    console.log("fetching")
+    fetch("http://localhost:3001/api/getDrugNames")
       .then(data => data.json())
-      .then(res => this.setState({ data: res.data }));
+      .then(res => this.setState({ drugNames: res.data }));
   };
 
   // our put method that uses our backend api
@@ -102,19 +104,21 @@ class App extends Component {
   // see them render into our screen
   render() {
     const { data } = this.state;
-    console.log("d",data)
+    console.log("d", data)
+
     return (
       <div>
-        <ul>
+        
+{/*         <ul>
           {data.length <= 0
             ? "NO DB ENTRIES YET"
             : data.map(dat => (
-                <li style={{ padding: "10px" }} key={data.message}>
-                  <span style={{ color: "gray" }}> id: </span> {dat.id} <br />
-                  <span style={{ color: "gray" }}> data: </span>
-                  {dat.message}
-                </li>
-              ))}
+              <li style={{ padding: "10px" }} key={data.message}>
+                <span style={{ color: "gray" }}> id: </span> {dat.id} <br />
+                <span style={{ color: "gray" }}> data: </span>
+                {dat.message}
+              </li>
+            ))}
         </ul>
         <div style={{ padding: "10px" }}>
           <input
@@ -158,7 +162,8 @@ class App extends Component {
           >
             UPDATE
           </button>
-        </div>
+        </div> */}
+
       </div>
     );
   }
