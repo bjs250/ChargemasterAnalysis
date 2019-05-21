@@ -10,8 +10,7 @@ To allow end users to investigate recently publicized chargemaster data from US 
 
 * [Express]() - Backend framework
 * [React]() - Frontend framework
+* [React-Dropdown]() - Dropdown component
 * [MongoDB]() - Backend database
-
-Deployed on Heroku
 
 ## Acknowledgments

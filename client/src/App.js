@@ -28,6 +28,7 @@ class App extends Component {
     // Bind event listening methods here
     this.handleDrugChange = this.handleDrugChange.bind(this);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
+    this.handleDosageChange = this.handleDosageChange.bind(this);
 
   }
 
@@ -80,10 +81,18 @@ class App extends Component {
 
   }
 
+  handleDosageChange = (event) => {
+    const dosageSelected = event.value;
+    this.setState({
+      dosageSelected: dosageSelected
+    });
+
+  }
+
 
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected } = this.state;
-    console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected)
+    console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
     const defaultOption = drugSelected;
 
     return (
