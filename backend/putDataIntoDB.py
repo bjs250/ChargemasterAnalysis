@@ -17,7 +17,7 @@ df = pd.read_excel("clean_data.xlsx", dtype=str)
 for index, row in df.iterrows():
     record = {
         "name": row["Drug"],
-        "price": row["Price"],
+        "price": float(row["Price"]),
         "hospital": row["Hospital"],
         "delivery": row["Delivery"],
         "dosage": row["Dosage"],

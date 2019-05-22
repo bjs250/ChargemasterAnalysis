@@ -61,7 +61,7 @@ router.get("/getDosageAmounts/", (req, res) => {
 
 router.get("/getData/", (req, res) => {
   const { drugName, deliveryMethod, dosage } = req.query;
-  Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}, (err, data) => {
+  Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}).sort({price:1}).exec(function(err, data){
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });

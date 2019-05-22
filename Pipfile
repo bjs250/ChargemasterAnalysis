@@ -10,6 +10,7 @@ pandas = "*"
 pymongo = "*"
 dnspython = "*"
 xlrd = "*"
+openpyxl = "*"
 
 [requires]
 python_version = "3.7"

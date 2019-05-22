@@ -11,8 +11,8 @@ def isFloat(string):
         return False
 
 if __name__ == "__main__":
-    drugNames = pd.read_excel("Drugs.xlsx",dtype=str)['Drug Name'].tolist()
-    dataFileNames = ["data/"+f for f in listdir("data/") if isfile(join("data/", f))]
+    drugNames = pd.read_excel("List_of_drugs.xlsx",dtype=str)['Drug Name'].tolist()
+    dataFileNames = ["raw_data/"+f for f in listdir("raw_data/") if isfile(join("raw_data/", f))]
 
     d = {}
     d["Drug"] = list()
@@ -103,5 +103,5 @@ if __name__ == "__main__":
 
     df = pd.DataFrame.from_dict(d)
     df = df.drop_duplicates()
-    df.to_excel("output.xlsx")
+    df.to_excel("clean_data.xlsx")
     print(df)    

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './App.css'
 import Dropdown from 'react-dropdown'
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label
 } from 'recharts';
 
 import axios from "axios";
@@ -105,12 +105,12 @@ class App extends Component {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data } = this.state;
     console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
     const defaultOption = drugSelected;
+    let minprice = null;
+    let maxprice = null;
     if (data.length > 0){
       const price = data.map(d => d["price"]);
-      const minprice = Math.min(price);
-      const maxprice = Math.max(price);
-      console.log(price);
-      console.log(minprice,maxprice);
+      minprice = Math.min(...price);
+      maxprice = Math.max(...price);
     }
 
     return (
@@ -124,18 +124,27 @@ class App extends Component {
 
         {data.length > 0 ?
         <BarChart
-          width={1000}
+          width={1800}
           height={600}
           data={data}
           margin={{
-            top: 5, right: 30, left: 20, bottom: 5,
+            top: 5, right: 30, left: 20, bottom: 350,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="hospital" />
-          <YAxis type="number" domain={[0,20]} />
+          <XAxis 
+            type="category" 
+            dataKey="hospital"
+            angle={-90} 
+            textAnchor="end"
+            interval={0}
+            >
+            {/* <Label value='Hospital' position='bottom' style={{textAnchor: 'middle'}}/> */}
+          </XAxis>
+          <YAxis type="number" domain={[0,maxprice]}>
+            <Label angle={-90} value='Price' position='insideLeft' style={{textAnchor: 'middle'}}/>
+          </YAxis>
           <Tooltip />
-          <Legend />
           <Bar dataKey="price" fill="#8884d8" />
         </BarChart>:null}
       </div>
