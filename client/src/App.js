@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import './App.css'
 import Dropdown from 'react-dropdown'
-import memoize from 'memoize-one';
+import {
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
 
 import axios from "axios";
 
@@ -103,8 +105,14 @@ class App extends Component {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data } = this.state;
     console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
     const defaultOption = drugSelected;
+    if (data.length > 0){
+      const price = data.map(d => d["price"]);
+      const minprice = Math.min(price);
+      const maxprice = Math.max(price);
+      console.log(price);
+      console.log(minprice,maxprice);
+    }
 
-    console.log("data",data)
     return (
       <div>
         <h1>Drug</h1>
@@ -114,6 +122,22 @@ class App extends Component {
         <h1>Dosage</h1>
         <Dropdown options={dosageAmounts} disabled={deliverySelected === null ? true : false} value={dosageSelected === null ? null : dosageSelected} onChange={this.handleDosageChange} placeholder="Select a dosage" />
 
+        {data.length > 0 ?
+        <BarChart
+          width={1000}
+          height={600}
+          data={data}
+          margin={{
+            top: 5, right: 30, left: 20, bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="hospital" />
+          <YAxis type="number" domain={[0,20]} />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="price" fill="#8884d8" />
+        </BarChart>:null}
       </div>
     );
   }

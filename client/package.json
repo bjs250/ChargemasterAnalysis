@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "memoize-one": "^5.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.4",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "recharts": "^1.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
