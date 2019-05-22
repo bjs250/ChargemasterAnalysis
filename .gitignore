@@ -1,6 +1,7 @@
 # Custom
 Resources/
 ~$output.xlsx
+.vscode/*
 
 # Logs
 logs
