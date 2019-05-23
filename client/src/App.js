@@ -101,16 +101,19 @@ class App extends Component {
 
   }
 
+
+
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data } = this.state;
     console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
+    //console.log(data)
     const defaultOption = drugSelected;
     let minprice = null;
     let maxprice = null;
-    if (data.length > 0){
-      const price = data.map(d => d["price"]);
-      minprice = Math.min(...price);
-      maxprice = Math.max(...price);
+    if (data.length > 0) {
+      const mean_price = data.map(d => d["mean_price"]);
+      minprice = Math.min(...mean_price);
+      maxprice = Math.max(...mean_price);
     }
 
     return (
@@ -123,33 +126,79 @@ class App extends Component {
         <Dropdown options={dosageAmounts} disabled={deliverySelected === null ? true : false} value={dosageSelected === null ? null : dosageSelected} onChange={this.handleDosageChange} placeholder="Select a dosage" />
 
         {data.length > 0 ?
-        <BarChart
-          width={1800}
-          height={600}
-          data={data}
-          margin={{
-            top: 5, right: 30, left: 20, bottom: 350,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            type="category" 
-            dataKey="hospital"
-            angle={-90} 
-            textAnchor="end"
-            interval={0}
+          <BarChart
+            width={1800}
+            height={600}
+            data={data}
+            margin={{
+              top: 5, right: 30, left: 20, bottom: 350,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              type="category"
+              dataKey="_id"
+              angle={-90}
+              textAnchor="end"
+              interval={0}
             >
-            {/* <Label value='Hospital' position='bottom' style={{textAnchor: 'middle'}}/> */}
-          </XAxis>
-          <YAxis type="number" domain={[0,maxprice]}>
-            <Label angle={-90} value='Price' position='insideLeft' style={{textAnchor: 'middle'}}/>
-          </YAxis>
-          <Tooltip />
-          <Bar dataKey="price" fill="#8884d8" />
-        </BarChart>:null}
+              {/* <Label value='Hospital' position='bottom' style={{textAnchor: 'middle'}}/> */}
+            </XAxis>
+            <YAxis type="number" domain={[0, maxprice]}>
+              <Label angle={-90} value='Price' position='insideLeft' style={{ textAnchor: 'middle' }} />
+            </YAxis>
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="mean_price" fill="#8884d8" />
+          </BarChart> : null}
       </div>
     );
   }
 }
 
 export default App;
+
+const CustomTooltip = ({ active, payload, label }) => {
+  let mean_price = null;
+  let max_price = null;
+  let min_price = null;
+  let total_records = null;
+  let values = null;
+  let std_dev = null;
+  if (payload[0]) {
+    mean_price = round(payload[0].payload.mean_price)
+    max_price = round(payload[0].payload.max_price)
+    min_price = round(payload[0].payload.min_price)
+    total_records = payload[0].payload.total_records
+    values = payload[0].payload.values
+    std_dev = round(payload[0].payload.standard_deviation)
+  }
+
+  if (active) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${label}`}</p>
+        {total_records > 1 ?
+          <div>
+            <p className="sublabel">
+              {`Average Price: ${mean_price}`}<br/>
+              {`Max Price: ${max_price}`}<br/>
+              {`Min Price: ${min_price}`}<br/>
+              {`Total Records: ${total_records}`}<br/>
+              {/* {`Values: ${values}`}<br/> */}
+              {`Standard Deviation: ${std_dev}`}
+            </p>
+          </div>
+          :
+          <div>
+            <p className="sublabel">{`Price: ${mean_price}`}</p>
+          </div>}
+      </div>
+    );
+  }
+
+  return null;
+};
+
+function round(num) {    
+  return +(Math.round(num + "e+2")  + "e-2");
+}

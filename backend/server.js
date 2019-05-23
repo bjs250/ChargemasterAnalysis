@@ -43,7 +43,7 @@ router.get("/getDrugNames", (req, res) => {
 
 router.get("/getDeliveryMethods/:drugName", (req, res) => {
   const { drugName } = req.params;
-  Data.distinct("delivery", {name: drugName}, (err, data) => {
+  Data.distinct("delivery", { name: drugName }, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
@@ -52,7 +52,7 @@ router.get("/getDeliveryMethods/:drugName", (req, res) => {
 
 router.get("/getDosageAmounts/", (req, res) => {
   const { drugName, deliveryMethod } = req.query;
-  Data.distinct("dosage", {name: drugName, delivery: deliveryMethod}, (err, data) => {
+  Data.distinct("dosage", { name: drugName, delivery: deliveryMethod }, (err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
@@ -61,7 +61,36 @@ router.get("/getDosageAmounts/", (req, res) => {
 
 router.get("/getData/", (req, res) => {
   const { drugName, deliveryMethod, dosage } = req.query;
-  Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}).sort({price:1}).exec(function(err, data){
+
+  // Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}).sort({price:1}).exec(function(err, data){
+  //   if (err) return res.json({ success: false, error: err });
+  //   return res.json({ success: true, data: data });
+  // });
+
+  Data.aggregate([
+    {
+      $match:
+      {
+        name: drugName,
+        delivery: deliveryMethod,
+        dosage: dosage
+      }
+    },
+    {
+      $group:
+      {
+        _id: "$hospital",
+        mean_price: { $avg: "$price" },
+        total_records: { $sum: 1 },
+        values: { $push: "$price" },
+        max_price: { $max: "$price" },
+        min_price: { $min: "$price" },
+        standard_deviation: { $stdDevSamp: "$price" }
+
+
+      }
+    }
+  ]).sort({mean_price:1}).exec(function (err, data) {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
