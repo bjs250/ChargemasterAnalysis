@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const Data = require("./data");
 
-const API_PORT = 3001;
 const app = express();
 app.use(cors());
 const router = express.Router();
@@ -94,4 +93,5 @@ router.get("/getData/", (req, res) => {
 app.use("/api", router);
 
 // Launch backend into a port
-app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+const port = process.env.PORT || 3001;
+app.listen(port);
