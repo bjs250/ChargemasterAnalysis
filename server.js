@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // This is the MongoDB database
 const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB?retryWrites=true";
 
@@ -91,6 +94,12 @@ router.get("/getData/", (req, res) => {
 
 // Append /api for http requests
 app.use("/api", router);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 // Launch backend into a port
 app.listen(process.env.PORT || 3001, function(){
