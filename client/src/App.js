@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './App.css'
 import Dropdown from 'react-dropdown'
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Label
 } from 'recharts';
 
 import axios from "axios";
@@ -77,8 +77,6 @@ class App extends Component {
       data: []
     });
 
-    console.log("http://localhost:3001/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected);
-
     fetch("http://localhost:3001/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected)
       .then(data => data.json())
       .then(res => this.setState({
@@ -106,13 +104,13 @@ class App extends Component {
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data } = this.state;
     console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
-    //console.log(data)
     const defaultOption = drugSelected;
-    let minprice = null;
+
+    // let minprice = null;
     let maxprice = null;
     if (data.length > 0) {
       const mean_price = data.map(d => d["mean_price"]);
-      minprice = Math.min(...mean_price);
+      // minprice = Math.min(...mean_price);
       maxprice = Math.max(...mean_price);
     }
 
@@ -142,14 +140,15 @@ class App extends Component {
               textAnchor="end"
               interval={0}
             >
-              {/* <Label value='Hospital' position='bottom' style={{textAnchor: 'middle'}}/> */}
             </XAxis>
             <YAxis type="number" domain={[0, maxprice]}>
               <Label angle={-90} value='Price' position='insideLeft' style={{ textAnchor: 'middle' }} />
             </YAxis>
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="mean_price" fill="#8884d8" />
-          </BarChart> : null}
+          </BarChart>
+          : null}
+
       </div>
     );
   }
@@ -162,15 +161,17 @@ const CustomTooltip = ({ active, payload, label }) => {
   let max_price = null;
   let min_price = null;
   let total_records = null;
-  let values = null;
+  // let values = null;
   let std_dev = null;
+  let description = null;
   if (payload[0]) {
     mean_price = round(payload[0].payload.mean_price)
     max_price = round(payload[0].payload.max_price)
     min_price = round(payload[0].payload.min_price)
     total_records = payload[0].payload.total_records
-    values = payload[0].payload.values
+    // values = payload[0].payload.values
     std_dev = round(payload[0].payload.standard_deviation)
+    description = payload[0].payload.description
   }
 
   if (active) {
@@ -180,17 +181,21 @@ const CustomTooltip = ({ active, payload, label }) => {
         {total_records > 1 ?
           <div>
             <p className="sublabel">
-              {`Average Price: ${mean_price}`}<br/>
-              {`Max Price: ${max_price}`}<br/>
-              {`Min Price: ${min_price}`}<br/>
-              {`Total Records: ${total_records}`}<br/>
+              {`Average Price: ${mean_price}`}<br />
+              {`Max Price: ${max_price}`}<br />
+              {`Min Price: ${min_price}`}<br />
+              {`Total Records: ${total_records}`}<br />
               {/* {`Values: ${values}`}<br/> */}
-              {`Standard Deviation: ${std_dev}`}
+              {`Standard Deviation: ${std_dev}`}<br />
+              {`Raw Description: ${description}`}
             </p>
           </div>
           :
           <div>
-            <p className="sublabel">{`Price: ${mean_price}`}</p>
+            <p className="sublabel">
+              {`Price: ${mean_price}`}<br />
+              {`Raw Description: ${description}`}
+            </p>
           </div>}
       </div>
     );
@@ -199,6 +204,6 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-function round(num) {    
-  return +(Math.round(num + "e+2")  + "e-2");
+function round(num) {
+  return +(Math.round(num + "e+2") + "e-2");
 }

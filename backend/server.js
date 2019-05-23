@@ -10,10 +10,10 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 
-// this is our MongoDB database
+// This is the MongoDB database
 const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB?retryWrites=true";
 
-// connects our back end code with the database
+// Connects back end code with the database
 mongoose.connect(
   dbRoute,
   { useNewUrlParser: true }
@@ -23,11 +23,9 @@ let db = mongoose.connection;
 
 db.once("open", () => console.log("connected to the database"));
 
-// checks if connection with the database is successful
+// Checks if connection with the database is successful
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-// (optional) only made for logging and
-// bodyParser, parses the request body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
@@ -62,11 +60,6 @@ router.get("/getDosageAmounts/", (req, res) => {
 router.get("/getData/", (req, res) => {
   const { drugName, deliveryMethod, dosage } = req.query;
 
-  // Data.find({name: drugName, delivery: deliveryMethod, dosage: dosage}).sort({price:1}).exec(function(err, data){
-  //   if (err) return res.json({ success: false, error: err });
-  //   return res.json({ success: true, data: data });
-  // });
-
   Data.aggregate([
     {
       $match:
@@ -85,8 +78,8 @@ router.get("/getData/", (req, res) => {
         values: { $push: "$price" },
         max_price: { $max: "$price" },
         min_price: { $min: "$price" },
-        standard_deviation: { $stdDevSamp: "$price" }
-
+        standard_deviation: { $stdDevSamp: "$price" },
+        description: {$first : "$description"}
 
       }
     }
@@ -97,52 +90,8 @@ router.get("/getData/", (req, res) => {
 
 });
 
-/* 
-router.get("/getData", (req, res) => {
-  Data.find((err, data) => {
-    console.log("=====",data)
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
-});
-
-router.post("/updateData", (req, res) => {
-  const { id, update } = req.body;
-  Data.findOneAndUpdate(id, update, err => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
-  });
-});
-
-router.delete("/deleteData", (req, res) => {
-  const { id } = req.body;
-  Data.findOneAndDelete(id, err => {
-    if (err) return res.send(err);
-    return res.json({ success: true });
-  });
-});
-
-router.post("/putData", (req, res) => {
-  let data = new Data();
-
-  const { id, message } = req.body;
-
-  if ((!id && id !== 0) || !message) {
-    return res.json({
-      success: false,
-      error: "INVALID INPUTS"
-    });
-  }
-  data.message = message;
-  data.id = id;
-  data.save(err => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
-  });
-}); */
-
-// append /api for our http requests
+// Append /api for http requests
 app.use("/api", router);
 
-// launch our backend into a port
+// Launch backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
