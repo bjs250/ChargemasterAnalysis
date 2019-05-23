@@ -38,15 +38,15 @@ class App extends Component {
 
   componentDidMount() {
     // Get list of Drugs
-    fetch("http://localhost:3001/api/getDrugNames")
-      .then(data => data.json())
-      .then(res => this.setState({ drugNames: res.data }));
-
+    axios.get("/api/getDrugNames")
+      .then(
+        res => this.setState({ drugNames: res.data.data }))
+      .catch(err => console.log(err));
+      
     // Fill in delivery method for the default drug
-    fetch("http://localhost:3001/api/getDeliveryMethods/" + this.state.drugSelected)
-      .then(data => data.json())
-      .then(res => this.setState({ deliveryMethods: res.data }));
-
+    axios.get("/api/getDeliveryMethods/" + this.state.drugSelected)
+      .then(res => this.setState({ deliveryMethods: res.data.data }))
+      .catch(err => console.log(err));
   }
 
   handleDrugChange = (event) => {
@@ -60,11 +60,11 @@ class App extends Component {
       data: []
     });
 
-    fetch("http://localhost:3001/api/getDeliveryMethods/" + drugName)
-      .then(data => data.json())
+    axios.get("/api/getDeliveryMethods/" + drugName)
       .then(res => this.setState({
-        deliveryMethods: res.data
-      }));
+        deliveryMethods: res.data.data
+      }))
+      .catch(err => console.log(err));
 
   }
 
@@ -77,11 +77,11 @@ class App extends Component {
       data: []
     });
 
-    fetch("http://localhost:3001/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected)
-      .then(data => data.json())
+    axios.get("/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected)
       .then(res => this.setState({
-        dosageAmounts: res.data
-      }));
+        dosageAmounts: res.data.data
+      }))
+      .catch(err => console.log(err));
 
   }
 
@@ -91,11 +91,11 @@ class App extends Component {
       dosageSelected: dosageSelected
     });
 
-    fetch("http://localhost:3001/api/getData/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + this.state.deliverySelected + "&dosage=" + dosageSelected)
-      .then(data => data.json())
+    axios.get("/api/getData/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + this.state.deliverySelected + "&dosage=" + dosageSelected)
       .then(res => this.setState({
-        data: res.data
-      }));
+        data: res.data.data
+      }))
+      .catch(err => console.log(err));
 
   }
 

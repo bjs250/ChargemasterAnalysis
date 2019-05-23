@@ -36,6 +36,7 @@ app.use(logger("dev"));
 /* Main Code starts here */
 
 router.get("/getDrugNames", (req, res) => {
+  console.log("hit");
   Data.distinct("name", (err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
