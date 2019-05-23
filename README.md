@@ -1,5 +1,3 @@
-# ChargemasterAnalysis
-
 ## Purpose
 
 This project is created as a preliminary data dashboard to allow end users to investigate recently publicized chargemaster data from US hospitals, particularly in the domain of consumer drug prices. 
@@ -33,19 +31,7 @@ The actual data was in most cases read into a Pandas dataframe, cleaned, and sta
 * [Catholic Medical Center NH](https://www.catholicmedicalcenter.org/patients-visitors/insurance-and-billing/chargemaster)
 * [Children's Hospital of Philadelphia](https://www.chop.edu/centers-programs/billing-and-insurance/understanding-hospital-charges)
 * [Dartmouth-Hitchcock Medical Center Lebanon](https://www.dartmouth-hitchcock.org/billing-charges/charges_dhmc.html)
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
+TODO: finish
 
 ## Design & Implementation
 
@@ -58,5 +44,3 @@ The data dashboard is a web application using Node/Express as the backend and Re
 * [React-Dropdown]() - Dropdown component
 * [Recharts]() - Self-contained React D3 Components (BarChart)
 * [MongoDB/Mongoose]() - Backend database
-
-## Acknowledgments
