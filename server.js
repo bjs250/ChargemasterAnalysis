@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 const dbRoute = "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB?retryWrites=true";
 
 // Connects back end code with the database
-mongoose.connect(
+mongoose.connect(process.env.PROD_MONGODB ||
   dbRoute,
   { useNewUrlParser: true }
 );
