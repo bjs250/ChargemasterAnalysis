@@ -23,19 +23,43 @@ class App extends Component {
       dosageAmounts: [],
       dosageSelected: null,
       data: [],
-
-      id: 0,
-      message: null,
-      intervalIsSet: false,
-      idToDelete: null,
-      idToUpdate: null,
-      objectToUpdate: null
+      viewportWidth: 0,
+      viewportHeight: 0,
+      screenOrientation: window.matchMedia("(orientation: portrait)").matches ? 'portrait' : 'landscape'
     };
 
     // Bind event listening methods here
     this.handleDrugChange = this.handleDrugChange.bind(this);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
     this.handleDosageChange = this.handleDosageChange.bind(this);
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.setScreenOrientation = this.setScreenOrientation.bind(this);
+  }
+
+  updateWindowDimensions() {
+    let root = document.getElementById("root");
+    let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+    this.setState({
+      viewportWidth: Math.max(width,1000),
+      viewportHeight: Math.max(height,600)
+    });
+  }
+
+  setScreenOrientation = () => {
+    if (window.matchMedia("(orientation: portrait)").matches) {
+      this.setState({
+        screenOrientation: 'landscape'
+      });
+    }
+
+    else if (window.matchMedia("(orientation: landscape)").matches) {
+      this.setState({
+        screenOrientation: 'portrait'
+      });
+    }
 
   }
 
@@ -51,8 +75,23 @@ class App extends Component {
 
     // Fill in delivery method for the default drug
     axios.get("/api/getDeliveryMethods/" + this.state.drugSelected)
-      .then(res => this.setState({ deliveryMethods: res.data.data }))
+      .then(res => {
+        let new_delivery = res.data.data.sort();
+        this.setState({ deliveryMethods: new_delivery })
+      })
       .catch(err => console.log(err));
+
+
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+    window.addEventListener('orientationchange', this.setScreenOrientation);
+
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+    window.removeEventListener('orientationchange', this.setScreenOrientation);
+
   }
 
   handleDrugChange = (event) => {
@@ -67,9 +106,12 @@ class App extends Component {
     });
 
     axios.get("/api/getDeliveryMethods/" + drugName)
-      .then(res => this.setState({
-        deliveryMethods: res.data.data
-      }))
+      .then(res => {
+        let new_delivery = res.data.data.sort();
+        this.setState({
+          deliveryMethods: new_delivery
+        })
+      })
       .catch(err => console.log(err));
 
   }
@@ -108,8 +150,10 @@ class App extends Component {
 
 
   render() {
-    const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data } = this.state;
-    console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
+    const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight,screenOrientation } = this.state;
+    //console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
+    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation",screenOrientation)
+
     const defaultOption = drugSelected;
 
     // let minprice = null;
@@ -142,8 +186,8 @@ class App extends Component {
 
         {data.length > 0 ?
           <BarChart
-            width={1800}
-            height={600}
+            width={viewportWidth}
+            height={viewportHeight}
             data={data}
             margin={{
               top: 5, right: 30, left: 20, bottom: 350,
