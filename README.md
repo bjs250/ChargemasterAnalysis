@@ -34,6 +34,7 @@ The actual data was in most cases read into a Pandas dataframe, cleaned, and sta
 * [Children's Hospital of Philadelphia](https://www.chop.edu/centers-programs/billing-and-insurance/understanding-hospital-charges)
 * [Dartmouth-Hitchcock Medical Center Lebanon](https://www.dartmouth-hitchcock.org/billing-charges/charges_dhmc.html)
 * [Huntsville Hospital Alabama](https://www.huntsvillehospital.org/price-transparency)
+<!-- * []()
 * []()
 * []()
 * []()
@@ -44,8 +45,7 @@ The actual data was in most cases read into a Pandas dataframe, cleaned, and sta
 * []()
 * []()
 * []()
-* []()
-* []()
+* []() -->
 
 ## Design & Implementation
 
@@ -58,5 +58,3 @@ The data dashboard is a web application using Node/Express as the backend and Re
 * [React-Dropdown]() - Dropdown component
 * [Recharts]() - Self-contained React D3 Components (BarChart)
 * [MongoDB]() - Backend database
-
-## Acknowledgments
