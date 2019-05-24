@@ -1,6 +1,2 @@
-
-- sort delivery
-- sort dosage
-
-- Tooltip style
-- Data validation
+- Data Validation
+- Y axis max (put to next highest order of magnitude)

@@ -13,7 +13,7 @@ collection = database["DrugInfoStore"]
 
 result = database["DrugInfoStore"].delete_many({})
 
-df = pd.read_excel("clean_data.xlsx", dtype=str)
+df = pd.read_excel("postprocessed_data.xlsx", dtype=str)
 for index, row in df.iterrows():
     record = {
         "name": row["Drug"],

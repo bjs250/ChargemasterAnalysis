@@ -43,8 +43,8 @@ class App extends Component {
     let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
     this.setState({
-      viewportWidth: Math.max(width,1000),
-      viewportHeight: Math.max(height,600)
+      viewportWidth: Math.max(width, 1000),
+      viewportHeight: Math.max(height, 600)
     });
   }
 
@@ -126,9 +126,13 @@ class App extends Component {
     });
 
     axios.get("/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected)
-      .then(res => this.setState({
-        dosageAmounts: res.data.data
-      }))
+      .then(res => {
+        var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+        let new_dosages = res.data.data.sort(collator.compare);
+        this.setState({
+          dosageAmounts: new_dosages
+        })
+      })
       .catch(err => console.log(err));
 
   }
@@ -147,12 +151,10 @@ class App extends Component {
 
   }
 
-
-
   render() {
-    const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight,screenOrientation } = this.state;
+    const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight, screenOrientation } = this.state;
     //console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
-    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation",screenOrientation)
+    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
 
     const defaultOption = drugSelected;
 
