@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import './App.css'
+import './bootstrap.css'
+
 import Dropdown from 'react-dropdown'
+
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Label
 } from 'recharts';
@@ -40,9 +43,12 @@ class App extends Component {
     // Get list of Drugs
     axios.get("/api/getDrugNames")
       .then(
-        res => this.setState({ drugNames: res.data.data }))
+        res => {
+          let new_data = res.data.data.sort();
+          this.setState({ drugNames: new_data })
+        })
       .catch(err => console.log(err));
-      
+
     // Fill in delivery method for the default drug
     axios.get("/api/getDeliveryMethods/" + this.state.drugSelected)
       .then(res => this.setState({ deliveryMethods: res.data.data }))
@@ -115,13 +121,24 @@ class App extends Component {
     }
 
     return (
-      <div>
-        <h1>Drug</h1>
-        <Dropdown options={drugNames} onChange={this.handleDrugChange} value={defaultOption} placeholder="Select a drug" />
-        <h1>Delivery</h1>
-        <Dropdown options={deliveryMethods} onChange={this.handleDeliveryChange} value={deliverySelected === null ? null : deliverySelected} placeholder="Select a delivery method" />
-        <h1>Dosage</h1>
-        <Dropdown options={dosageAmounts} disabled={deliverySelected === null ? true : false} value={dosageSelected === null ? null : dosageSelected} onChange={this.handleDosageChange} placeholder="Select a dosage" />
+      <div id="app-container">
+
+        <div className="container">
+          <div className="row">
+            <div className="col-sm custom-col-style">
+              <h1 className="header" >Drug</h1>
+              <Dropdown className="dropdown-custom" options={drugNames} onChange={this.handleDrugChange} value={defaultOption} placeholder="Select a drug" />
+            </div>
+            <div className="col-sm custom-col-style">
+              <h1 className="header">Delivery</h1>
+              <Dropdown className="dropdown-custom" options={deliveryMethods} onChange={this.handleDeliveryChange} value={deliverySelected === null ? null : deliverySelected} placeholder="Select a delivery method" />
+            </div>
+            <div className="col-sm custom-col-style">
+              <h1 className="header">Dosage</h1>
+              <Dropdown className="dropdown-custom" options={dosageAmounts} disabled={deliverySelected === null ? true : false} value={dosageSelected === null ? null : dosageSelected} onChange={this.handleDosageChange} placeholder="Select a dosage" />
+            </div>
+          </div>
+        </div>
 
         {data.length > 0 ?
           <BarChart

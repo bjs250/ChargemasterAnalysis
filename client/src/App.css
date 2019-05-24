@@ -1,3 +1,27 @@
+#app-container{
+  padding-top: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  #app-container {padding-top: 30px};
+}
+
+.custom-col-style{
+  padding-bottom: 15px;
+}
+
+.header{
+  font-family: "Garamond";
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.dropdown-custom{
+  font-family: "Georgia";
+  font-size: 16px;
+}
+
 .Dropdown-disabled{
     opacity: 0.4;
 }
