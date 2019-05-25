@@ -1,13 +1,15 @@
 """
-    This file will load cleaned excel data, clear the current database table, and replace it with cleaned data
+    This file will load post processed excel data, clear the current database table, and replace it with cleaned data
+    Since the Dev and Prod databases are the same, connection string has been saved to a local env variable
 """
 
 from pymongo import MongoClient
 import pandas as pd
-import pprint 
+
+CONNECTION_STRING = str(os.environ["chargemaster_connection_string"])
 
 client = MongoClient(
-    "mongodb+srv://bjs250:DeltaV123@cluster0-rhktc.mongodb.net/DrugInfoDB")
+    CONNECTION_STRING)
 database = client["DrugInfoDB"]
 collection = database["DrugInfoStore"]
 
@@ -26,6 +28,3 @@ for index, row in df.iterrows():
     rec = database["DrugInfoStore"].insert_one(record)
 
 print("Done")
-
-
-

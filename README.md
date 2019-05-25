@@ -58,3 +58,5 @@ The data dashboard is a web application using Node/Express as the backend and Re
 * [React-Dropdown]() - Dropdown component
 * [Recharts]() - Self-contained React D3 Components (BarChart)
 * [MongoDB]() - Backend database
+* [Axios]() - API fetchings
+

@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import './App.css'
 import './bootstrap.css'
-
 import Dropdown from 'react-dropdown'
-
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Label
 } from 'recharts';
-
 import axios from "axios";
 
 class App extends Component {
@@ -23,6 +20,7 @@ class App extends Component {
       dosageAmounts: [],
       dosageSelected: null,
       data: [],
+
       viewportWidth: 0,
       viewportHeight: 0,
       screenOrientation: window.matchMedia("(orientation: portrait)").matches ? 'portrait' : 'landscape'
@@ -38,7 +36,6 @@ class App extends Component {
   }
 
   updateWindowDimensions() {
-    let root = document.getElementById("root");
     let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let height = Math.min(document.documentElement.clientHeight, window.innerHeight || 0)
 
@@ -66,6 +63,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    
     // Get list of Drugs
     axios.get("/api/getDrugNames")
       .then(
@@ -75,7 +73,7 @@ class App extends Component {
         })
       .catch(err => console.log(err));
 
-    // Fill in delivery method for the default drug
+    // Fill in delivery method for the default drug (Acetaminophen)
     axios.get("/api/getDeliveryMethods/" + this.state.drugSelected)
       .then(res => {
         let new_delivery = res.data.data.sort();
@@ -87,15 +85,14 @@ class App extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
     window.addEventListener('orientationchange', this.setScreenOrientation);
-
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
     window.removeEventListener('orientationchange', this.setScreenOrientation);
-
   }
 
+  /* When new Drug is selected, get list of delivery methods and clear the dosage list */
   handleDrugChange = (event) => {
     const drugName = event.value;
     this.setState({
@@ -115,9 +112,9 @@ class App extends Component {
         })
       })
       .catch(err => console.log(err));
-
   }
 
+  /* When new Delivery is selected, get list of dosages */
   handleDeliveryChange = (event) => {
     const deliverySelected = event.value;
     this.setState({
@@ -136,9 +133,9 @@ class App extends Component {
         })
       })
       .catch(err => console.log(err));
-
   }
 
+  /* When dosage is selected, query the database for all matches on drug,delivery,dosage */
   handleDosageChange = (event) => {
     const dosageSelected = event.value;
     this.setState({
@@ -155,20 +152,13 @@ class App extends Component {
 
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight, screenOrientation } = this.state;
-    //console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
-    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
-    console.log("window", window.innerHeight );
-    console.log("client", document.documentElement.clientHeight)
     const defaultOption = drugSelected;
 
-    // let minprice = null;
     let maxprice = null;
     if (data.length > 0) {
       const mean_price = data.map(d => d["mean_price"]);
-      // minprice = Math.min(...mean_price);
       maxprice = special_round(Math.max(...mean_price));
     }
-
 
     return (
       <div id="app-container">
@@ -275,6 +265,7 @@ function round(num) {
   return +(Math.round(num + "e+2") + "e-2");
 }
 
+/* For formatting maxprice */
 function special_round(num) {
   let n = num;
   let i = 0;
@@ -289,11 +280,3 @@ function special_round(num) {
     return n;
   }
 }
-
-/* 
-72.11
-7.21 i = 1
-round(7.21) -> 8.00
-8.00 * 10^1 = 80
-
-*/

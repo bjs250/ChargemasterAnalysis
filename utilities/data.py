@@ -1,3 +1,7 @@
+"""
+    Basic data parsing and data cleanup
+"""
+
 import pandas as pd
 import re
 from os import listdir
@@ -12,7 +16,7 @@ def isFloat(string):
 
 if __name__ == "__main__":
     drugNames = pd.read_excel("List_of_drugs.xlsx",dtype=str)['Drug Name'].tolist()
-    dataFileNames = ["raw_data/"+f for f in listdir("raw_data/") if isfile(join("raw_data/", f))]
+    dataFileNames = ["preprocessed_data/"+f for f in listdir("preprocessed_data/") if isfile(join("preprocessed_data/", f))]
 
     d = {}
     d["Drug"] = list()
@@ -78,9 +82,7 @@ if __name__ == "__main__":
                             
                             # "40MG" format
                             if dosage is None:
-                                #search = re.search('^[0-9.-]+[A-Z]',word)
                                 search = re.search('(?:[^A-Z\*\(\)\,-]*)[0-9.]+[-]*[MGL\/]+([0-9.-]*[MGL\/])*',description.replace(" ", ""))
-                                #print(description.replace(" ", ""))
                                 if search is not None:
                                     dosage = search.group()
                                 
@@ -103,5 +105,4 @@ if __name__ == "__main__":
 
     df = pd.DataFrame.from_dict(d)
     df = df.drop_duplicates()
-    df.to_excel("clean_data.xlsx")
-    print(df)    
+    df.to_excel("preprocessed_data.xlsx")
