@@ -1,2 +1,2 @@
-- Data Validation
 - Y axis max (put to next highest order of magnitude)
+- Finish Readme
