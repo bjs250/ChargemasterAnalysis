@@ -127,7 +127,7 @@ class App extends Component {
 
     axios.get("/api/getDosageAmounts/?drugName=" + this.state.drugSelected + "&deliveryMethod=" + deliverySelected)
       .then(res => {
-        var collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+        var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
         let new_dosages = res.data.data.sort(collator.compare);
         this.setState({
           dosageAmounts: new_dosages
@@ -154,7 +154,7 @@ class App extends Component {
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight, screenOrientation } = this.state;
     //console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
-    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
+    //console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
 
     const defaultOption = drugSelected;
 
@@ -163,8 +163,11 @@ class App extends Component {
     if (data.length > 0) {
       const mean_price = data.map(d => d["mean_price"]);
       // minprice = Math.min(...mean_price);
-      maxprice = Math.max(...mean_price);
+      maxprice = special_round(Math.max(...mean_price));
+      console.log(maxprice)
+
     }
+
 
     return (
       <div id="app-container">
@@ -270,3 +273,26 @@ const CustomTooltip = ({ active, payload, label }) => {
 function round(num) {
   return +(Math.round(num + "e+2") + "e-2");
 }
+
+function special_round(num) {
+  let n = num;
+  let i = 0;
+  if (n > 10) {
+    while (n > 10) {
+      n = n / 10;
+      i+=1;
+    }
+    return Math.ceil(n) * Math.pow(10,i);
+  }
+  else{
+    return n;
+  }
+}
+
+/* 
+72.11
+7.21 i = 1
+round(7.21) -> 8.00
+8.00 * 10^1 = 80
+
+*/
