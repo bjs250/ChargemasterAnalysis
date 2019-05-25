@@ -1,5 +1,3 @@
-# ChargemasterAnalysis
-
 ## Purpose
 
 This project was created as a naive data dashboard to allow end users to investigate recently publicized chargemaster data from US hospitals, particularly in the domain of consumer drug prices. 
@@ -55,17 +53,34 @@ The actual data was in most cases read into a Pandas dataframe, cleaned, and sta
 * [Orlando Health](https://www.orlandohealth.com/patients-and-visitors/patient-financial-resources/pricing-transparency-guide)
 * [Providence Portland Medical Center](https://oregon.providence.org/location-directory/p/providence-portland-medical-center/guest-information/pricing-transparency/)
 * [Queens Medical Center Hawaii](https://www.queens.org/the-queens-medical-center/patients-and-visitors/pay-your-bill/transparency-pricing-qmc)
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
-* []()
+* [Robert Wood Johnson New Brunswick](https://www.rwjbh.org/rwj-university-hospital-new-brunswick/billing/charges/)
+* [Rush University Chicago](https://www.rush.edu/patients-visitors/patients/pay-your-bill/cost-care)
+* [St Cloud Minnesota](https://www.centracare.com/pricing-financial-assistance/)
+* [Stormont Vail](https://www.stormontvail.org/patient-services/understanding-hospital-pricing-and-charges/)
+* [Temple University](https://www.templehealth.org/locations/temple-university-hospital/patients-visitors/billing-insurance/pricing-info)
+* [Thomas Jefferson University](https://hospitals.jefferson.edu/patients-and-visitors/charge-description-master.html)
+* [Trinity Health Hartford](https://www.stfranciscare.org/cms-price-transparency-hartford)
+* [University North Carolina Caldwell](https://www.unchealthcare.org/about-us/billing-and-financial-assistance/chargemaster/)
+* [University of Arkansas](https://uamshealth.com/patientsandguests/billing/uams-price-transparency-2019/)
+* [University of California San Diego Medical Center](https://health.ucsd.edu/patients/billing/Pages/default.aspx)
+* [University of California San Francisco Medical Center](https://www.ucsfhealth.org/about/pricing-transparency/)
+* [University of Colorado](https://www.uchealth.org/billing-and-pricing-information/)
+* [University of Iowa](https://uihc.org/hospital-services-and-charges)
+* [University of Kansas](https://www.kansashealthsystem.com/patient-visitor/financial/insurance/are-you-covered)
+* [University of Massachusetts Clinton](https://www.umassmemorialhealthcare.org/healthalliance-clinton-hospital/patients-visitors/patient-resources/healthalliance-clinton-pricing-list)
+* [University of Oklahoma](https://www.oumedicine.com/oumedicine/primary-care/patients-visitors/hospital-financial-assistance/hospital-charges)
+* [University of Pittsburgh Presbyterian Shadyside](https://www.upmc.com/locations/hospitals/presbyterian/patients-visitors/patient-information/cdm)
+* [University of Texas MD Anderson](https://www.mdanderson.org/patients-family/becoming-our-patient/planning-for-care/insurance-billing-financial-support/health-care-disclosures.html)
+* [University of Utah](https://healthcare.utah.edu/bill/charges.php)
+* [University of Washington Medical Center](https://www.uwmedicine.org/patient-resources/billing-and-insurance)
+* [University of Wisconsin Hospitals](https://www.uwhealth.org/billing-and-insurance/priceline-pricing-costs/30091)
+* [Virginia Commonwealth University Health System](https://www.vcuhealth.org/locations/vcu-medical-center/billing-and-insurance/price-transparency)
+* [Virtua West Jersey Health System](https://www.virtua.org/patient-tools/hospital-charges-information)
+* [Yale New Haven Health](https://www.ynhh.org/patients-visitors/billing-insurance/pricing.aspx)
 
 ## Design & Implementation
 
-The data dashboard is a web application using Node/Express as the backend and React as the front-end. It utilizes so pre-built React component libraries for the dropdown lists and barchart. All the cleaned data is loaded into a MongoDB database by a Python script that utilizes Mongoose to insert the data. As one may expect, selecting parts of the dropdown will alter state in React and execute a few simple queries to the backend API, which will filter and serve the relevant data.
+This data dashboard is a web application using Node/Express as the backend and React as the front-end. It utilizes some pre-built React component libraries for the dropdown lists and barchart. All the cleaned data is loaded into a MongoDB database by a Python script that utilizes Mongoose to insert the data. As one may expect, selecting parts of the dropdown will alter state in React and execute a few simple queries to the backend API, which will filter and serve the relevant data.
 
 ## Built With
 
