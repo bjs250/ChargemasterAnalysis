@@ -40,7 +40,7 @@ class App extends Component {
   updateWindowDimensions() {
     let root = document.getElementById("root");
     let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    let height = Math.min(document.documentElement.clientHeight, window.innerHeight || 0)
 
     this.setState({
       viewportWidth: Math.max(width, 1000),
@@ -49,6 +49,8 @@ class App extends Component {
   }
 
   setScreenOrientation = () => {
+    this.updateWindowDimensions();
+
     if (window.matchMedia("(orientation: portrait)").matches) {
       this.setState({
         screenOrientation: 'landscape'
@@ -154,8 +156,9 @@ class App extends Component {
   render() {
     const { drugNames, drugSelected, deliveryMethods, deliverySelected, dosageAmounts, dosageSelected, data, viewportWidth, viewportHeight, screenOrientation } = this.state;
     //console.log("drugSelected", drugSelected, "deliveryMethod", deliverySelected, "dosageSelected", dosageSelected)
-    //console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
-
+    console.log("viewportWidth", viewportWidth, "viewportHeight", viewportHeight, "orientation", screenOrientation)
+    console.log("window", window.innerHeight );
+    console.log("client", document.documentElement.clientHeight)
     const defaultOption = drugSelected;
 
     // let minprice = null;
@@ -164,8 +167,6 @@ class App extends Component {
       const mean_price = data.map(d => d["mean_price"]);
       // minprice = Math.min(...mean_price);
       maxprice = special_round(Math.max(...mean_price));
-      console.log(maxprice)
-
     }
 
 

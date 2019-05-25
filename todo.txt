@@ -1,2 +1,1 @@
 - Finish Readme
-- screen stretch mobile bug
