@@ -9,7 +9,7 @@
     "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.4",
     "react-scripts": "3.0.1",
-    "recharts": "^1.6.2"
+    "recharts": "^2.1.14"
   },
   "scripts": {
     "start": "react-scripts start",
